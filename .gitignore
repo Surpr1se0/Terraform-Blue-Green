@@ -1,0 +1,38 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+
+# Terraform plan files
+*.plan
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI config
+.terraformrc
+terraform.rc
+
+# Secrets
+.env
+.env.*
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.log
+
+# Bash
+*.bak
+
+# Docker
+.dockerignore
