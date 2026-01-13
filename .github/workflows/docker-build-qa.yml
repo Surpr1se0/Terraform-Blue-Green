@@ -1,10 +1,10 @@
 name: Build and Push Docker Image 
 
-# on: 
-#   push: 
-#     branches: ["qa"]
-#   pull_request:
-#     branches: ["qa"]
+on: 
+  push: 
+    branches: ["qa"]
+  pull_request:
+    branches: ["qa"]
 
 jobs: 
   build: 
