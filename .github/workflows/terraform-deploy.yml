@@ -10,10 +10,13 @@ on:
 jobs:  
   build:
       runs-on: ubuntu-latest
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/prod'
       permissions: 
         contents: read
         packages: write
+      defaults: 
+        run: 
+          working-directory: container-node
       
       steps: 
         - name: Checkout repository
@@ -41,16 +44,19 @@ jobs:
           uses: actions/upload-artifact@v4
           with: 
             name: docker-image
-            path: image.tar
+            path: container-node/image.tar
             if-no-files-found: error
     
   test:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/prod'
     needs: build
     permissions:
       contents: read
       packages: write
+    defaults: 
+        run: 
+          working-directory: container-node
     steps: 
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -78,8 +84,9 @@ jobs:
     
   deploy-terraform:
     name: Deploy Infrastructure
+    needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/prod'
     defaults:
       run:
         working-directory: infra
@@ -87,6 +94,11 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
       
+      - name: Setup AWS Creds
+        run: | 
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} 
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       - name: setup terraform 
         uses: hashicorp/setup-terraform@v3
         with: 
