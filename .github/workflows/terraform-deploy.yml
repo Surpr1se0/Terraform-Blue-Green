@@ -94,15 +94,15 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
       
-      - name: setup terraform 
-        uses: hashicorp/setup-terraform@v3
-        with: 
-            terraform_version: 1.6.6
-
       - name: Setup AWS Creds
         run: | 
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} 
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: setup terraform 
+        uses: hashicorp/setup-terraform@v3
+        with: 
+            terraform_version: 1.6.6
 
       - name: terraform init 
         run: terraform init
