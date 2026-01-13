@@ -105,7 +105,7 @@ resource "aws_lb_listener" "http" {
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.green.arn ### to change w/ github actions
+    target_group_arn = aws_lb_target_group.blue.arn ### to change w/ github actions
   }
 }
 
@@ -125,7 +125,7 @@ resource "aws_instance" "app-blue"{
              sudo systemctl enable nginx
              echo '<!doctype html>
              <html lang="en"><h1>Images!</h1></br>
-             <h3>(Instance B)</h3>
+             <h3>(Instance BLUE)</h3>
              </html>' | sudo tee /var/www/html/index.html
              echo 'server {
                        listen 80 default_server;
@@ -164,7 +164,7 @@ resource "aws_instance" "app-green"{
              sudo systemctl enable nginx
              echo '<!doctype html>
              <html lang="en"><h1>Images!</h1></br>
-             <h3>(Instance B)</h3>
+             <h3>(Instance Green)</h3>
              </html>' | sudo tee /var/www/html/index.html
              echo 'server {
                        listen 80 default_server;

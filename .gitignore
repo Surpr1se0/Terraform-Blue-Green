@@ -36,3 +36,9 @@ terraform.rc
 
 # Docker
 .dockerignore
+
+# Others 
+*.log
+.git
+.env
+.DS_Store
