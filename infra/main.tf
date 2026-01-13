@@ -32,8 +32,8 @@ resource "aws_security_group" "ec2" {
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -78,7 +78,7 @@ resource "aws_lb" "app" {
 ### TARGET GROUPS ### 
 resource "aws_lb_target_group" "blue" {
   name     = "tg-blue"
-  port     = 80
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
 
@@ -89,7 +89,7 @@ resource "aws_lb_target_group" "blue" {
 
 resource "aws_lb_target_group" "green" {
   name     = "tg-green"
-  port     = 80
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
 
@@ -116,33 +116,33 @@ resource "aws_instance" "app-blue"{
   subnet_id = data.aws_subnets.default.ids[0]
   security_groups = [aws_security_group.ec2.id]
 
-  #user_data = file("user_data.sh")
-  user_data = <<-EOF
-             #!/bin/bash
-             sudo apt-get update
-             sudo apt-get install -y nginx
-             sudo systemctl start nginx
-             sudo systemctl enable nginx
-             echo '<!doctype html>
-             <html lang="en"><h1>Images!</h1></br>
-             <h3>(Instance BLUE)</h3>
-             </html>' | sudo tee /var/www/html/index.html
-             echo 'server {
-                       listen 80 default_server;
-                       listen [::]:80 default_server;
-                       root /var/www/html;
-                       index index.html index.htm index.nginx-debian.html;
-                       server_name _;
-                       location /images/ {
-                           alias /var/www/html/;
-                           index index.html;
-                       }
-                       location / {
-                           try_files $uri $uri/ =404;
-                       }
-                   }' | sudo tee /etc/nginx/sites-available/default
-             sudo systemctl reload nginx
-             EOF
+  user_data = file("setup-docker.sh")
+  # user_data = <<-EOF
+  #            #!/bin/bash
+  #            sudo apt-get update
+  #            sudo apt-get install -y nginx
+  #            sudo systemctl start nginx
+  #            sudo systemctl enable nginx
+  #            echo '<!doctype html>
+  #            <html lang="en"><h1>Images!</h1></br>
+  #            <h3>(Instance BLUE)</h3>
+  #            </html>' | sudo tee /var/www/html/index.html
+  #            echo 'server {
+  #                      listen 80 default_server;
+  #                      listen [::]:80 default_server;
+  #                      root /var/www/html;
+  #                      index index.html index.htm index.nginx-debian.html;
+  #                      server_name _;
+  #                      location /images/ {
+  #                          alias /var/www/html/;
+  #                          index index.html;
+  #                      }
+  #                      location / {
+  #                          try_files $uri $uri/ =404;
+  #                      }
+  #                  }' | sudo tee /etc/nginx/sites-available/default
+  #            sudo systemctl reload nginx
+  #            EOF
 
   tags = {
     Name = "app-blue"
@@ -155,33 +155,33 @@ resource "aws_instance" "app-green"{
   subnet_id       = data.aws_subnets.default.ids[0]
   security_groups = [aws_security_group.ec2.id]
 
-  #user_data = file("user_data.sh")
-  user_data = <<-EOF
-             #!/bin/bash
-             sudo apt-get update
-             sudo apt-get install -y nginx
-             sudo systemctl start nginx
-             sudo systemctl enable nginx
-             echo '<!doctype html>
-             <html lang="en"><h1>Images!</h1></br>
-             <h3>(Instance Green)</h3>
-             </html>' | sudo tee /var/www/html/index.html
-             echo 'server {
-                       listen 80 default_server;
-                       listen [::]:80 default_server;
-                       root /var/www/html;
-                       index index.html index.htm index.nginx-debian.html;
-                       server_name _;
-                       location /images/ {
-                           alias /var/www/html/;
-                           index index.html;
-                       }
-                       location / {
-                           try_files $uri $uri/ =404;
-                       }
-                   }' | sudo tee /etc/nginx/sites-available/default
-             sudo systemctl reload nginx
-             EOF
+  user_data = file("setup-docker.sh")
+  # user_data = <<-EOF
+  #            #!/bin/bash
+  #            sudo apt-get update
+  #            sudo apt-get install -y nginx
+  #            sudo systemctl start nginx
+  #            sudo systemctl enable nginx
+  #            echo '<!doctype html>
+  #            <html lang="en"><h1>Images!</h1></br>
+  #            <h3>(Instance Green)</h3>
+  #            </html>' | sudo tee /var/www/html/index.html
+  #            echo 'server {
+  #                      listen 80 default_server;
+  #                      listen [::]:80 default_server;
+  #                      root /var/www/html;
+  #                      index index.html index.htm index.nginx-debian.html;
+  #                      server_name _;
+  #                      location /images/ {
+  #                          alias /var/www/html/;
+  #                          index index.html;
+  #                      }
+  #                      location / {
+  #                          try_files $uri $uri/ =404;
+  #                      }
+  #                  }' | sudo tee /etc/nginx/sites-available/default
+  #            sudo systemctl reload nginx
+  #            EOF
 
   tags = {
     Name = "app-green"
@@ -193,11 +193,11 @@ resource "aws_instance" "app-green"{
 resource "aws_lb_target_group_attachment" "blue" {
   target_group_arn = aws_lb_target_group.blue.arn
   target_id        = aws_instance.app-blue.id
-  port             = 80
+  port             = 8080
 }
 
 resource "aws_lb_target_group_attachment" "green" {
   target_group_arn = aws_lb_target_group.green.arn
   target_id        = aws_instance.app-green.id
-  port             = 80
+  port             = 8080
 }
