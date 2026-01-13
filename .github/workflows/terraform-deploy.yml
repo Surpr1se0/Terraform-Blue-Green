@@ -10,6 +10,7 @@ on:
 jobs:  
   build:
       runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/main'
       permissions: 
         contents: read
         packages: write
@@ -27,12 +28,6 @@ jobs:
               registry: ${{ secrets.REGISTRY }}
               username: ${{ secrets.USERNAME }}
               password: ${{ secrets.PASSWORD }}
-          
-        - name: Extract Docker metadata
-          id: meta
-          uses: docker/metadata-action@v5
-          with: 
-            images: ${{ secrets.REGISTRY }}/${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}
         
         - name: Build Docker Image
           run: |
@@ -51,6 +46,7 @@ jobs:
     
   test:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs: build
     permissions:
       contents: read
@@ -83,6 +79,7 @@ jobs:
   deploy-terraform:
     name: Deploy Infrastructure
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     defaults:
       run:
         working-directory: infra
