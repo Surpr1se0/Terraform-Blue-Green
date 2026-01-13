@@ -32,8 +32,8 @@ resource "aws_security_group" "ec2" {
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -78,7 +78,7 @@ resource "aws_lb" "app" {
 ### TARGET GROUPS ### 
 resource "aws_lb_target_group" "blue" {
   name     = "tg-blue"
-  port     = 80
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
 
@@ -89,7 +89,7 @@ resource "aws_lb_target_group" "blue" {
 
 resource "aws_lb_target_group" "green" {
   name     = "tg-green"
-  port     = 80
+  port     = 8080
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
 
@@ -193,11 +193,11 @@ resource "aws_instance" "app-green"{
 resource "aws_lb_target_group_attachment" "blue" {
   target_group_arn = aws_lb_target_group.blue.arn
   target_id        = aws_instance.app-blue.id
-  port             = 80
+  port             = 8080
 }
 
 resource "aws_lb_target_group_attachment" "green" {
   target_group_arn = aws_lb_target_group.green.arn
   target_id        = aws_instance.app-green.id
-  port             = 80
+  port             = 8080
 }

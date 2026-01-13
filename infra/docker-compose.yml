@@ -1,3 +1,4 @@
+name: "node-app"
 services: 
   app: 
     build: 
