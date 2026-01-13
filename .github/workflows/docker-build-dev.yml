@@ -104,7 +104,7 @@ jobs:
 
       - name: Docker Load Image 
         run: | 
-          docker load -i container-node/image.tar 
+          docker load -i image.tar 
       
       - name: Push Docker DEV and SHA image
         run: | 
