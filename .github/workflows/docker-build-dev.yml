@@ -23,12 +23,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      - name: Debub-Paths
-        run: | 
-          pwd 
-          ls 
-          ls container-node
-      
       - name: Build Docker Image
         run: |
           docker build -t ${{ secrets.NAMESPACE }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }} .
