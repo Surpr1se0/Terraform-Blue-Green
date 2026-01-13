@@ -1,7 +1,8 @@
+name: "node-app"
 services: 
   app: 
     build: 
-      context: . 
+      context: ../container-node/
       dockerfile: Dockerfile
     ports: 
       - "8080:8080"
