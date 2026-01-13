@@ -1,0 +1,12 @@
+{
+  "name": "nodejs-image-demo",
+  "version": "1.0.0",
+  "description": "nodejs image demo",
+  "main": "app.js",
+  "author": "surprise <surprise@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^5.2.1"
+  }
+}
