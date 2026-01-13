@@ -16,5 +16,3 @@ sudo usermod -aG docker ubuntu
 # Runs docker-compose in the project directory 
 cd /home/ubuntu/Terraform-Blue-Green/infra || exit 
 sudo docker compose up -d
-
-
