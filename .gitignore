@@ -36,7 +36,6 @@ terraform.rc
 
 # Docker
 .dockerignore
-Dockerfile
 
 # Others 
 *.log
