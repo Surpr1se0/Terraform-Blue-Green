@@ -107,6 +107,15 @@ jobs:
       - name: terraform init 
         run: terraform init
 
+      - name: terraform validate
+        run: terraform validate 
+      
+      - name: terraform refresh 
+        run: terraform refresh 
+
+      - name: terraform plan 
+        run: terraform plan
+      
       - name: terraform plan
         run: terraform plan 
       
