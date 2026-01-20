@@ -110,6 +110,9 @@ jobs:
       - name: terraform validate
         run: terraform validate 
       
+      - name: terraform destroy old resources
+        run: terraform destroy -auto-approve || true
+      
       - name: terraform refresh 
         run: terraform refresh 
 
