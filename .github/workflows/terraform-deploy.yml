@@ -105,13 +105,13 @@ jobs:
             terraform_version: 1.6.6
 
       - name: terraform init 
-        run: terraform init
+        run: terraform init -reconfigure
 
       - name: terraform validate
         run: terraform validate 
       
       - name: terraform destroy old resources
-        run: terraform destroy -auto-approve || true
+        run: terraform destroy -auto-approve
       
       - name: terraform refresh 
         run: terraform refresh 
