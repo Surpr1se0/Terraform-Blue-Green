@@ -83,6 +83,9 @@ jobs:
           done
     
   deploy-terraform:
+    permissions:
+      id-token: write
+      contents: read
     name: Deploy Infrastructure
     needs: test
     runs-on: ubuntu-latest
