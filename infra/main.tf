@@ -189,6 +189,18 @@ resource "aws_instance" "app-green"{
 }
 
 
+### ADD STATE LOCK #### 
+
+terraform {
+  backend "s3" {
+    bucket         = "surprise-terraform-state"
+    key            = "blue-green/terraform.tfstate"
+    region         = "eu-north-1"
+    dynamodb_table = "terraform-locks"
+    encrypt        = true
+  }
+}
+
 ###  ATTATCHMENT TO LB  ###
 resource "aws_lb_target_group_attachment" "blue" {
   target_group_arn = aws_lb_target_group.blue.arn
